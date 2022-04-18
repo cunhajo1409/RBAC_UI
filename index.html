@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+    <meta charset="utf-8">    
+
+    <title>Role Based Access Control</title>
+
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.css">  
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.theme.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.structure.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap-grid.css">
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.mobile.all.min.css">
+
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jquery/dist/jquery.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.js"></script>
+
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>    
+
+    <!-- <link rel="stylesheet" href="/sites/RBAC/SiteAssets/css/mall.css"> -->
+
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/js/Globals.js"></script>
+
+</head>
+    <div id="container">
+        <div id="divContentHeader" style="display:block;">
+
+            <div id="divTitle" 
+                style="display:block;
+                        max-width: 600px;
+                        margin: 10px auto;
+                        padding-top: 40px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-size: 42px;">
+                        Role Based Access Control           
+            </div>
+            <div id="divMenu" style="display:none;">
+                <ul id="ulMenu">
+                    <li>
+                        Users
+                        <ul>
+                            <li>
+                                Accounts
+                            </li>
+                            <li>
+                                Account Types
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        Groups
+                        <ul>
+                            <li>
+                                Project Groups
+                            </li>
+                            <li>
+                                Group Types
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Projects
+                    </li>
+                    <li>
+                        Roles
+                    </li>
+                    <li>
+                        Scopes
+                    </li>
+                </ul>
+            </div>
+        
+        </div>
+
+        <div id="divContent" style="display: block;">
+
+            <div id="divADGroupControls" class="contentArea" style="display:none;">
+                <div id="divADGroupsCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                    Security Groups
+                </div>                  
+                <div id="divADGroupDetail" style="display:none">
+                </div>
+                <div id="divADGroupEdit" style="display:none">
+                </div>
+                <div id="divGrdADGroups">
+                </div>
+            </div>
+
+            <div id="divMIPGroupTypeControls" class="contentArea"  style="display:none;">
+                <div id="divADGroupTypeCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                    Group Types
+                </div> 
+                <div id="divMIPGroupTypeDetail" style="display:none">
+                </div>
+                <div id="divMIPGroupTypeEdit" style="display:none">
+                </div>
+                <div id="divGrdMIPGroupTypes">
+                </div>
+            </div>
+            
+            <div id="divADUserControls" class="contentArea"  style="display:none;">
+                <div id="divADUsersCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                    Users
+                </div>  
+                <div id="divADUserDetail" style="display:none">
+                </div>
+                <div id="divADUserEdit" style="display:none">
+                </div>
+
+                <div id="divGrdADUsers" style="display:block">
+                </div>
+
+            </div>
+            
+            <div id="divADUserAccountTypeControls" class="contentArea"  style="display:none">
+                <div id="divADUserAccountTypesCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                    Account Types
+                </div>  
+                <div id="divADUserAccountTypeDetail" style="display:none">
+                </div>
+                <div id="divADUserAccountTypesEdit" style="display:none">
+                </div>
+                <div id="divGrdADUserAccountTypes" style="display:block">
+                </div>                
+            </div>
+            
+            <div id="divMIPGroupProjectControls" class="contentArea"  style="display:none">
+                <div id="divMIPGroupProjectCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                    Projects
+                </div>  
+                <div id="divMIPGroupProjectDetail" style="display:none">
+                </div>
+                <div id="divMIPGroupProjectEdit" style="display:none">
+                </div>
+                <div id="divGrdMIPGroupProjects" style="display:block">
+                </div>                
+            </div>
+            
+            <div id="divMIPGroupRoleControls" class="contentArea"  style="display:none">
+                <div id="divMIPGroupRoleCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                Roles
+                </div>  
+                <div id="divMIPGroupRoleDetail" style="display:none">
+                </div>
+                <div id="divMIPGroupRoleEdit" style="display:none">
+                </div>
+                <div id="divGrdMIPGroupRoles" style="display:block">
+                </div>                
+            </div>
+            
+            <div id="divMIPGroupScopeControls" class="contentArea"  style="display:none">
+                <div id="divMIPGroupScopeCaption" 
+                        style= "display:inline-flex;
+                                max-width: 600px;
+                                margin: 10px auto;
+                                padding-top: 20px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                align-items:flex-start;">
+                Scopes
+                </div>  
+                <div id="divMIPGroupScopeDetail" style="display:none">
+                </div>
+                <div id="divMIPGroupScopeEdit" style="display:none">
+                </div>
+                <div id="divGrdMIPGroupScopes" style="display:block">
+                </div>                
+            </div>
+        </div>
+
+
+
+    </div>
+    <script>
+        init();
+
+        function init()
+        {
+            let promisedDataComplete = $.when
+            (
+                    getADUsers()
+                   ,getADGroups()
+                   ,getADUsersGroups()
+                   ,getADUserAccountTypes()
+                   ,getMIPGroupProjects()
+                   ,getMIPGroupTypes()
+                   ,getMIPGroupRoles()
+                   ,getMIPGroupScopes()
+            );
+
+            function getADUsers()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/ADUser",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        ADUsersArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(textStatus);
+                        console.log(errorMessage);
+                        alert(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getADGroups()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/ADGroup",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        ADGroupsArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getADUsersGroups()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/ADUserGroup",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        ADUsersGroupsArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getADUserAccountTypes()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/ADUserAccountType",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        ADUserAccountTypesArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getMIPGroupProjects()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/MIPGroupProject",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        MIPGroupProjectsArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getMIPGroupTypes()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/MIPGroupType",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        MIPGroupTypesArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getMIPGroupRoles()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/MIPGroupRole",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        MIPGroupRolesArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            function getMIPGroupScopes()
+            {
+                return $.ajax(
+                {
+                    url: "https://localhost:44395/odata/MIPGroupScope",
+                    type: "GET",
+                    dataType: "json",
+                    headers:
+                    {
+                        "accept": "application/json;odata=verbose"
+                    },
+                    success: function (data)
+                    {                 
+                        MIPGroupScopesArray = data.value;
+                    },               
+                    error: function (xhr, textStatus, errorMessage)
+                    {
+                        console.log(errorMessage);
+                    }		        
+                });
+            } 
+
+            promisedDataComplete.done(function()
+            {       
+
+                // bindEvents();
+                console.log("ADUsers ");
+                console.log(ADUsersArray);
+                console.log("ADGroups ");
+                console.log(ADGroupsArray);
+                console.log("ADUsersGroups ");
+                console.log(ADUsersGroupsArray);
+                console.log("ADUserAccountTypes ");
+                console.log(ADUserAccountTypesArray);
+                console.log("MIPGroupProjects");
+                console.log(MIPGroupProjectsArray);
+                console.log("MIPGroupTypes");
+                console.log(MIPGroupTypesArray);
+                console.log("MIPGroupRoles");
+                console.log(MIPGroupRolesArray);
+                console.log("MIPGroupScopes");
+                console.log(MIPGroupScopesArray);
+                loadPage();
+            })
+
+        }
+
+        function loadPage()
+        {
+            $("#ulMenu").kendoMenu({
+                select: function(e)
+                {
+                    var itemText = $(e.item).children(".k-link").text().trim();
+
+                    $(".contentArea").hide();
+
+                    switch (itemText) 
+                    {
+                        case "Accounts":
+                            $("#divADUserControls").show();
+                            break;
+                        case "Account Types" :
+                            $("#divADUserAccountTypeControls").show();
+                            break;
+                        case "Project Groups": 
+                            $("#divADGroupControls").show();
+                            break;
+                        case "Group Types":
+                            $("#divMIPGroupTypeControls").show();
+                            break;
+                        case "Projects":
+                            $("#divMIPGroupProjectControls").show();
+                            break;
+                        case "Roles":
+                            $("#divMIPGroupRoleControls").show();
+                            break;
+                        case "Scopes":
+                            $("#divMIPGroupScopeControls").show();
+                            break;
+                    }
+                }
+            });
+
+            $("#divMenu").show();
+
+            $("#divGrdADGroups").kendoGrid({
+                columns:[   {title: "Key", field: "group_Key", width: 60 },
+                            {title: "ID", field: "group_id", width: 320 },
+                            {title: "Scope", field: "group_scope_code", width: 80},
+                            {title: "Project", field: "group_project_code", width: 90},
+                            {title: "Role", field: "group_role_code", width: 90},
+                            {title: "Type", field: "group_type_code", width: 90},
+                            {title: "Description", field: "group_description", width: 400},
+                            {title: "Owner", field: "project_owner", width: 60},
+                            {title: "EMail", field: "project_email", width: 60},
+                            {title: "Phone", field: "project_telephone", width: 60},
+                            {title: "Inactivated", field: "inactivated_date", width: 85}],
+                dataSource:{
+                        data: ADGroupsArray,
+                        pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode: "multiple"
+                },
+                groupable: true
+            });
+
+            $("#divGrdMIPGroupTypes").kendoGrid({
+                columns:[   {title: "Code", field: "group_type_code", width: 70},
+                            {title: "Name", field: "group_type_name", width: 200},
+                            {title: "Description", field: "group_type_description", width: 350},],
+                dataSource:{
+                        data: MIPGroupTypesArray,
+                        pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode: "multiple"
+                },
+                groupable: true
+            });
+
+            $("#divGrdADUsers").kendoGrid({
+                columns:[   {title:"Key", field:"user_key", width: 60},
+                            {title:"Name", field:"name", width: 380},
+                            {title:"User Name", field:"user_name", width: 190},
+                            {title:"Company", field:"Company"},
+                            {title:"Dept.", field:"Department", width: 190},
+                            {title:"Title", field:"Title"},
+                            {title:"EMail", field:"Email"},
+                            {title:"Phone", field:"Telephone", width: 130},
+                            {title:"Status", field:"Enabled", width: 70},
+                            {title:"Expired", field:"AccountExpirationDate", width: 110},
+                            {title:"Type", field:"AccountType", width: 60}],
+                dataSource:{
+                        data: ADUsersArray,
+                        pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode:"multiple"
+                },
+                groupable: true
+            });
+
+            $("#divGrdADUserAccountTypes").kendoGrid({
+                columns:[{title:"Key", field:"user_type_key", width: 60 },
+                         {title:"Name", field:"user_type_name", width: 350 },
+                         {title:"Description", field:"user_type_description"}],
+                dataSource:{
+                    data: ADUserAccountTypesArray,
+                    pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode:"mutiple"
+                },
+                groupable:true
+            });
+
+            $("#divGrdMIPGroupProjects").kendoGrid({
+                columns:[{title:"Code", field:"group_project_code", width: 120},
+                         {title:"Name", field:"group_project_name", width: 420},
+                         {title:"Description", field:"group_project_description"}],
+                dataSource:{
+                    data: MIPGroupProjectsArray,
+                    pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode:"mutiple"
+                },
+                groupable:true
+            });
+
+            $("#divGrdMIPGroupRoles").kendoGrid({
+                columns:[{title:"Code", field:"group_role_code", width: 120},
+                         {title:"Name", field:"group_role_name", width: 260},
+                         {title:"Description", field:"group_role_description"}],
+                dataSource:{
+                    data: MIPGroupRolesArray,
+                    pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode:"mutiple"
+                },
+                groupable:true
+            });
+
+            $("#divGrdMIPGroupScopes").kendoGrid({
+                columns:[{title:"Code", field:"group_scope_code", width: 120},
+                         {title:"Name", field:"group_scope_name", width: 285},
+                         {title:"Description", field:"group_scope_description"}],
+                dataSource:{
+                    data: MIPGroupScopesArray,
+                    pageSize: 6
+                },
+                height: 400,
+                scrolable: true,
+                pageable: true,
+                sortable: {
+                    mode:"mutiple"
+                },
+                groupable:true
+            });
+        }
+
+</script>
+</body>
+</html>
