@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+    <meta charset="utf-8">    
+
+    <title>Role Based Access Control</title>
+
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.css">  
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.theme.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.structure.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap-grid.css">
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.mobile.all.min.css">
+
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/css/RBAC.css">
+
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jquery/dist/jquery.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.js"></script>
+    
+    
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>   
+        
+
+</head>
+<body>
+
+    <div id="container">
+        <div id="divContentHeader" style="display:block;">
+
+            <div id="divTitle" 
+                 class="testClass"
+                 style="display:block;
+                        max-width: 600px;
+                        margin: 10px auto;
+                        padding-top: 40px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-size: 42px;">
+                        Role Based Access Control           
+            </div>
+            <div id="divMenu" style="display:none;">
+            </div>
+        </div>
+        <div id="grid">           
+        </div>
+
+<script>
+        $(document).ready(function () {
+            $("#grid").kendoGrid({
+                dataSource:
+                    {    type: "odata-v4"
+                        ,transport:
+                        {
+                             read: 
+                            {
+                                url: function()
+                                {
+                                    return "https://localhost:44395/OData/MIPGroupScope";
+                                }
+                            }
+                            ,update:
+                            {
+                                url: function(dataItem)
+                                {
+                                    return "https://localhost:44395/OData/MIPGroupScope(" + dataItem.group_scope_key + ")";
+                                    
+                                }
+                            }
+                            ,create:
+                            {
+                                url: function(dataItem)
+                                {
+                                    delete dataItem.group_scope_key;
+                                    console.log(dataItem);
+                                    return "https://localhost:44395/OData/MIPGroupScope";
+                                }
+                            }
+                            ,destroy:
+                                {
+                                    url: function(dataItem)
+                                    {
+                                        return "https://localhost:44395/OData/MIPGroupScope(" + dataItem.group_scope_key + ")";
+                                    }
+                                }
+                            ,parameterMap: function(data,type)
+                            {
+                                console.log(type);
+                                if (type == "create")
+                                {
+                                    delete data.group_scope_key;
+                                    return kendo.stringify(data);
+
+                                }
+                                console.log(data);
+
+                            }
+                        }                            
+                        ,sort:
+                        { 
+                             field:'group_scope_key'
+                            ,dir: 'asc'
+                        }
+                        ,schema:
+                        {    
+                            model:
+                            {
+                                id: "group_scope_key"
+                                ,fields: 
+                                {
+                                 group_scope_key:  {editable:false, type: "number" } 
+                                ,group_scope_code: {type:"string",validation:{required: true}} 
+                                ,group_scope_name: {type:"string",validation:{required: true}}
+                                ,group_scope_description: {type:"string",defaultValue:null}
+                                ,Inactive: {type:"boolean", defaultValue:false}
+                                }
+                            }
+                        }
+                        ,pageSize: 18
+                    }
+                ,height: 500
+                ,change: onChange
+                ,dataBound: onDataBound
+                ,dataBinding: onDataBinding
+                ,sort: onSorting
+                ,filter: onFiltering
+                ,group: onGrouping
+                ,page: onPaging
+                ,groupExpand: onGroupExpand
+                ,groupCollapse: onGroupCollapse
+                ,navigatable: true
+                ,pageable: true
+                ,pageable:true
+                ,filterable:true
+                ,sortable:true
+                ,columnMenu:true
+                ,toolbar: ["create", "save", "cancel","Hide Inactive"]
+                ,columns:
+                    [    { field: "group_scope_key", title: "Key", width: 80}
+                        ,{ field: "group_scope_code", title: "Code", width: 80 }
+                        ,{ field: "group_scope_name", title: "Name", width: 200 }
+                        ,{ field: "group_scope_description", title: "Description", width: 400}
+                        ,{ field: "Inactive", title: "Inactive", width: 70}
+ 
+                        ,{command: "destroy", title: "&nbsp;", width: 150}
+                    ]
+                ,editable: true
+            });
+
+            $(".k-grid-save-changes").click(function()
+            {
+                console.log("update selected")
+            })
+
+            $(".k-grid-HideInactive").click(function()
+            {
+                console.log("toogle inactive");
+                var grid = $("#grid").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());            
+            })
+       
+            function onChange(arg)
+            {
+                console.log("entered on change");
+                var selected = $.map(this.select(), function(item)
+                {
+                    return $(item).text();
+                });
+
+                console.log("Selected: " + selected.length + " item(s), [" + selected.join(", ") + "]");
+            }
+
+            function onDataBound(arg) {
+                console.log("Grid data bound");
+            }
+
+            function onDataBinding(arg) {
+                console.log("Grid data binding");
+            }
+
+            function onSorting(arg) {
+                console.log("Sorting on field: " + arg.sort.field + ", direction:" + (arg.sort.dir || "none"));
+            }
+
+            function onFiltering(arg) {
+                console.log("Filter on " + kendo.stringify(arg.filter));
+            }
+
+            function onPaging(arg) {
+                console.log("Paging to page index:" + arg.page);
+            }
+
+            function onGrouping(arg) {
+                console.log("Group on " + kendo.stringify(arg.groups));
+            }
+
+            function onGroupExpand(arg) {
+                console.log("The group to be expanded: " + kendo.stringify(arg.group));
+            }
+
+            function onGroupCollapse(arg) {
+                console.log("The group to be collapsed: " + kendo.stringify(arg.group));
+            }  
+
+        });
+    </script>
+</div>
+
+
+</body>
+</html>

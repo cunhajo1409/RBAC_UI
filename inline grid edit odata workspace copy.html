@@ -78,7 +78,6 @@
                         {
                             url: function(dataItem)
                             {
-                                delete dataItem.group_Key;
                                 return "https://localhost:44395/OData/ADGroup";
                             }
                         }
@@ -88,6 +87,17 @@
                                 {
                                     return "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")";
                                 }
+                            }
+                            ,parameterMap: function(data,type)
+                            {
+                                console.log(type);
+                                if (type == "create")
+                                {
+                                    delete data.group__key;
+                                    return kendo.stringify(data);
+                                }
+                                console.log(data);
+
                             }
                     }
                     ,sort:
@@ -103,11 +113,11 @@
                             ,fields: 
                             {
                                  group_Key: {editable:false, type: "number" }
-                                ,groupd_id: {type:"string"}
-                                ,group_scope_code: {type:"string", defaultValue: { group_scope_key: -1, group_scope_code: "n/a", group_scope_decription:"n/a"}}
-                                ,group_project_code: {type:"string", defaultValue: { group_project_key: -1, group_project_code: "n/a", group_project_decription:"n/a"}}
-                                ,group_role_code: {type:"string", defaultValue: { group_role_key: -1, group_role_code: "n/a", group_role_decription:"n/a"}}
-                                ,group_type_code: {type:"string", defaultValue: { group_type_key: -1, group_type_code: "n/a", group_type_decription:"n/a"}}
+                                ,group_id: {type:"string"}
+                                ,group_scope_code: {type:"string", defaultValue:"n/a" }
+                                ,group_project_code: {type:"string", defaultValue: "n/a"}
+                                ,group_role_code: {type:"string", defaultValue: "n/a"   }
+                                ,group_type_code: {type:"string", defaultValue: "n/a"   }
                                 ,group_description:  {type:"string"}
                                 ,group_object_category: {type:"string"}
                                 ,project_owner: {type:"string"}
@@ -116,10 +126,10 @@
                                 ,create_date: {type:"date", defaultValue:null}
                                 ,last_updated_date: {type:"date", defaultValue:null}
                                 ,inactivated_date: {type:"date", defaultValue:null}
-                                ,group_project_key: {type:"number"}
-                                ,group_role_key: {type:"number"}
-                                ,group_scope_key: {type:"number"}
-                                ,group_type_key: {type:"Number"}
+                                ,group_project_key: {type:"number", defaultValue: -1}
+                                ,group_role_key: {type:"number", defaultValue: -1}
+                                ,group_scope_key: {type:"number", defaultValue: -1}
+                                ,group_type_key: {type:"Number", defaultValue: -1}
                                 ,Inactive: {type:"boolean", defaultValue:false}
                                 ,ad_inactive_date: {type:"date"}
                             }
@@ -147,84 +157,28 @@
 
                 ,columns:
                     [   //"group_Key"
-                         { field: "group_Key"
-                            , title: "Key"
-                            , width:  80
-                         }
-                        ,{ field: "group_id"
-                            , title: "ID"
-                            , width: 320
-                         }
-                        ,{ field: "group_scope_code"
-                            , title: "Scope"
-                            , width:  80
-                            , editor: groupScopeCodeDropDownEditor
-//                            , template: "#=group_scope_code.group_scope_name#"      
-                         }
-                        ,{ field: "group_project_code"
-                            , title: "Project"
-                            , width:  90
-                            , editor: groupProjectCodeDropDownEditor
-//                            , template: "#=group_type_code.group_type_name#"      
-                         }
-                        ,{ field: "group_role_code"
-                            , title: "Role"
-                            , width:  90
-                            , editor: groupRoleCodeDropDownEditor
-//                            , template: "#=group_type_code.group_type_name#"                             
-                         }
-                        ,{ field: "group_type_code"
-                            , title: "Type"
-                            , width:  90
-                            , editor: groupTypeCodeDropDownEditor
-//                            , template: "#=group_type_code.group_type_name#"                        
-                        }
-                        ,{ field: "group_description"
-                            , title: "Description"
-                            , width: 400
-                         }
-                        ,{ field: "group_object_category"
-                            , title: "Object Category"
-                            , width:  90
-                         }
-                        ,{ field: "project_owner"
-                            , title: "Owner"
-                            , width:  60
-                         }
-                        ,{ field: "project_email"
-                            , title: "EMail"
-                            , width:  60
-                         }
-                        ,{ field: "project_telephone"
-                            , title: "Phone"
-                            , width:  60
-                         }
-                        ,{ field: "create_date"
-                            , title: "Created"
-                            , width:  90
-                            , template : '#= kendo.toString(create_date,"yyyy-MM-dd HH:mm:ss:fff") #'
-                         }
-                        ,{ field: "last_updated_date"
-                            , title: "Updated"
-                            , width:  90
-                            , template : '#= kendo.toString(last_updated_date,"yyyy-MM-dd HH:mm:ss:fff") #'
-                         }
-                        ,{ field: "inactivated_date"
-                            , title: "Inactivated"
-                            , width:  90
-                            , template : '#= kendo.toString(inactivated_date,"yyyy-MM-dd HH:mm:ss:fff") #'
-                         }
-                        ,{ field: "Inactive"
-                            , title: "Inactive"
-                            , width: 70
-                         }
-                        ,{
-                            field: "ad_inactive_date"
-                             , ttile:"Ad Inactive Date"
-                             , width: 90   
-                             , template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd HH:mm:ss:fff") #'
-                         } 
-                        ,{command: "destroy"                ,    title: "&nbsp;"         , width: 150}
+                         { field: "group_Key", title: "Key", width: 80}
+                        ,{ field: "group_id", title: "ID", width: 320}
+                        ,{ field: "group_scope_code", title: "Scope", width: 80, editor: groupScopeCodeDropDownEditor, template: "#=group_scope_code#"}
+                        ,{ field: "group_project_code", title: "Project", width: 90, editor: groupProjectCodeDropDownEditor, template: "#=group_project_code#"}
+                        ,{ field: "group_role_code", title: "Role", width: 90, editor: groupRoleCodeDropDownEditor, template: "#=group_role_code#"}
+                        ,{ field: "group_type_code", title: "Type", width: 90, editor: groupTypeCodeDropDownEditor, template: "#=group_type_code#"}
+                        ,{ field: "group_description", title: "Description", width: 400}
+                        ,{ field: "group_object_category", title: "Object Category", width: 90}
+                        ,{ field: "project_owner", title: "Owner", width: 60}
+                        ,{ field: "project_email", title: "EMail", width: 60}
+                        ,{ field: "project_telephone", title: "Phone", width: 60}
+                        ,{ field: "create_date", title: "Created", width: 90, template : '#= kendo.toString(create_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
+                        ,{ field: "last_updated_date", title: "Updated", width: 90, template : '#= kendo.toString(last_updated_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
+                        ,{ field: "inactivated_date", title: "Inactivated", width: 90, template : '#= kendo.toString(inactivated_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
+                        ,{ field: "group_project_key", hidden:true, title:"Project_key"} 
+                        ,{ field: "group_role_key", hidden:true, title:"Role_Key"}      
+                        ,{ field: "group_scope_key", hidden:true, title:"Scope_Key"}     
+                        ,{ field: "group_type_key", hidden:true, title:"Type_Key"} 
+                        ,{ field: "Inactive", title: "Inactive", width: 70}
+                        ,{ field: "ad_inactive_date", title:"Ad Inactive Date", width: 90, template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd HH:mm:ss:fff") #'} 
+   
+                        ,{command: "destroy", title: "&nbsp;", width: 150}
                     ]
                 ,editable: true
             });
@@ -320,7 +274,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: false
+                        {    autoBind: true
                             ,dataTextField: "group_scope_code"
                             ,dataValueField: "group_scope_code"
                             ,dataSource:
@@ -341,7 +295,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: false
+                        {    autoBind: true
                             ,dataTextField: "group_type_code"
                             ,dataValueField: "group_type_code"
                             ,dataSource:
@@ -362,8 +316,8 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: false
-                            ,dataTextField: "group_project_code"
+                        {    autoBind: true
+                            ,dataTextField: "group_project_cod"
                             ,dataValueField: "group_project_code"
                             ,dataSource:
                             {
@@ -383,7 +337,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: false
+                        {    autoBind: true
                             ,dataTextField: "group_role_code"
                             ,dataValueField: "group_role_code"
                             ,dataSource:
