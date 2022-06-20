@@ -53,13 +53,14 @@
 
 <script>
         $(document).ready(function () {
+            
             $("#grid").kendoGrid({
                 dataSource:
                 {
                      type: "odata-v4"
                     ,transport:
                     {
-                        read: 
+                         read: 
                         {
                             url: function()
                             {
@@ -94,10 +95,9 @@
                                 if (type == "create")
                                 {
                                     delete data.group__key;
-                                    return kendo.stringify(data);
                                 }
                                 console.log(data);
-
+                                return kendo.stringify(data);
                             }
                     }
                     ,sort:
@@ -116,8 +116,8 @@
                                 ,group_id: {type:"string"}
                                 ,group_scope_code: {type:"string", defaultValue:"n/a" }
                                 ,group_project_code: {type:"string", defaultValue: "n/a"}
-                                ,group_role_code: {type:"string", defaultValue: "n/a"   }
-                                ,group_type_code: {type:"string", defaultValue: "n/a"   }
+                                ,group_role_code: {type:"string", defaultValue: "n/a"}
+                                ,group_type_code: {type:"string", defaultValue: "n/a"}
                                 ,group_description:  {type:"string"}
                                 ,group_object_category: {type:"string"}
                                 ,project_owner: {type:"string"}
@@ -154,33 +154,30 @@
                 ,sortable:true
                 ,columnMenu:true
                 ,toolbar: ["create", "save", "cancel","Hide Inactive"]
-
                 ,columns:
-                    [   //"group_Key"
-                         { field: "group_Key", title: "Key", width: 80}
-                        ,{ field: "group_id", title: "ID", width: 320}
+                    [    { field: "group_Key", title: "Key", width: 80, locked:true, lockable:false}
+                        ,{ field: "group_id", title: "ID", width: 320, locked:true}
                         ,{ field: "group_scope_code", title: "Scope", width: 80, editor: groupScopeCodeDropDownEditor, template: "#=group_scope_code#"}
                         ,{ field: "group_project_code", title: "Project", width: 90, editor: groupProjectCodeDropDownEditor, template: "#=group_project_code#"}
                         ,{ field: "group_role_code", title: "Role", width: 90, editor: groupRoleCodeDropDownEditor, template: "#=group_role_code#"}
                         ,{ field: "group_type_code", title: "Type", width: 90, editor: groupTypeCodeDropDownEditor, template: "#=group_type_code#"}
-                        ,{ field: "group_description", title: "Description", width: 400}
-                        ,{ field: "group_object_category", title: "Object Category", width: 90}
-                        ,{ field: "project_owner", title: "Owner", width: 60}
-                        ,{ field: "project_email", title: "EMail", width: 60}
-                        ,{ field: "project_telephone", title: "Phone", width: 60}
-                        ,{ field: "create_date", title: "Created", width: 90, template : '#= kendo.toString(create_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
-                        ,{ field: "last_updated_date", title: "Updated", width: 90, template : '#= kendo.toString(last_updated_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
-                        ,{ field: "inactivated_date", title: "Inactivated", width: 90, template : '#= kendo.toString(inactivated_date,"yyyy-MM-dd HH:mm:ss:fff") #'}
+                        ,{ field: "group_description", title: "Description", width: 300}
+                        ,{ field: "group_object_category", hidden:true , title: "Object Category", width: 90}
+                        ,{ field: "project_owner", title: "Owner", width: 100}
+                        ,{ field: "project_email", title: "EMail", width: 150}
+                        ,{ field: "project_telephone", title: "Phone", width: 130}
+                        ,{ field: "create_date", hidden:true , title: "Created", width: 90, template : '#= kendo.toString(create_date,"yyyy-MM-dd") #'}
+                        ,{ field: "last_updated_date", hidden:true , title: "Updated", width: 90, template : '#= kendo.toString(last_updated_date,"yyyy-MM-dd") #'}
+                        ,{ field: "inactivated_date", title: "Inactivated", width: 150, template : '#= kendo.toString(inactivated_date,"yyyy-MM-dd") #'}
                         ,{ field: "group_project_key", hidden:true, title:"Project_key"} 
                         ,{ field: "group_role_key", hidden:true, title:"Role_Key"}      
                         ,{ field: "group_scope_key", hidden:true, title:"Scope_Key"}     
                         ,{ field: "group_type_key", hidden:true, title:"Type_Key"} 
-                        ,{ field: "Inactive", title: "Inactive", width: 70}
-                        ,{ field: "ad_inactive_date", title:"Ad Inactive Date", width: 90, template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd HH:mm:ss:fff") #'} 
-   
-                        ,{command: "destroy", title: "&nbsp;", width: 150}
+                        ,{ field: "Inactive", title: "Inactive", width: 130}
+                        ,{ field: "ad_inactive_date", title:"Ad Inactive Date", width: 180, template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd") #'}   
+                        ,{ command: "destroy", title: "&nbsp;", width: 150}
                     ]
-                ,editable: true
+                 ,editable: true
             });
 
             $(".k-grid-save-changes").click(function()
@@ -225,7 +222,11 @@
 
             
             })
-       
+
+            $(".k-grid-delete").click(function(){
+                console.log($(this));
+            })
+
             function onChange(arg)
             {
                 console.log("entered on change");
@@ -274,7 +275,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: true
+                        {    autoBind: false
                             ,dataTextField: "group_scope_code"
                             ,dataValueField: "group_scope_code"
                             ,dataSource:
@@ -295,7 +296,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: true
+                        {    autoBind: false
                             ,dataTextField: "group_type_code"
                             ,dataValueField: "group_type_code"
                             ,dataSource:
@@ -316,8 +317,8 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: true
-                            ,dataTextField: "group_project_cod"
+                        {    autoBind: false
+                            ,dataTextField: "group_project_code"
                             ,dataValueField: "group_project_code"
                             ,dataSource:
                             {
@@ -337,7 +338,7 @@
                 $('<input required name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
-                        {    autoBind: true
+                        {    autoBind: false
                             ,dataTextField: "group_role_code"
                             ,dataValueField: "group_role_code"
                             ,dataSource:

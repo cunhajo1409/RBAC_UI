@@ -61,11 +61,6 @@
 
                     <li>
                         Groups
-                        <ul>
-                            <li>
-                                Project Groups
-                            </li>
-                        </ul>
                     </li>
                     <li>
                         Scopes
@@ -78,7 +73,7 @@
                         Roles
                     </li>
                     <li>
-                        Group Types
+                        Types
                     </li>  
                 </ul>
             </div>
@@ -253,11 +248,11 @@
                         case "Account Types" :
                             $("#divADUserAccountTypeControls").show();
                             break;
-                        case "Project Groups": 
+                        case "Groups": 
                             $("#divADGroupControls").show();
                             break;
-                        case "Group Types":
-                            $("#divMIPGroupTypeControls").show();
+                        case "Scopes":
+                            $("#divMIPGroupScopeControls").show();
                             break;
                         case "Projects":
                             $("#divMIPGroupProjectControls").show();
@@ -265,8 +260,8 @@
                         case "Roles":
                             $("#divMIPGroupRoleControls").show();
                             break;
-                        case "Scopes":
-                            $("#divMIPGroupScopeControls").show();
+                        case "Types":
+                            $("#divMIPGroupTypeControls").show();
                             break;
                     }
                 }
