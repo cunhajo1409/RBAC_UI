@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">   
+    <meta charset="utf-8">    
+
+    <title>Role Based Access Control</title>
+
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.css">  
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.theme.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.structure.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/css/bootstrap-grid.css">
+
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.rtl.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.1.330/styles/kendo.mobile.all.min.css">
+
+    <link rel="stylesheet" href="RBAC_Site/Sites/RBAC/SiteAssets/css/RBAC.css">
+
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jquery/dist/jquery.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/jqueryui/jquery-ui.js"></script>
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.1.330/js/kendo.all.min.js"></script>    
+
+
+    <script src="RBAC_Site/Sites/RBAC/SiteAssets/js/Globals.js"></script>
+
+</head>
+    <div id="container">
+        <div id="divContentHeader" style="display:block;">
+            <div id="divTitle">
+                <div    id="div RightPlaceholder"
+                        style=" display:inline-block;
+                                float:left;
+                                min-width:20%;
+                                margin: 10px auto;
+                                padding-top: 40px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                text-align: center;"
+                                >
+                </div>
+                <div    id="divTitleText"
+                        style=" display: inline-block;
+                                float: left;
+                                width: 60%;
+                                margin: 10px auto;
+                                padding-top: 40px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                text-align: center;">
+                    Role Based Access Control           
+                </div>
+                <div    id="divCurrentGrid"
+                        style="display:inline-block;
+                        width:20%;
+                        margin: 10px auto;
+                        padding-top: 40px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-size: 36px;
+                        text-align: center;">
+                </div>        
+            </div>
+
+            <div id="divMenu" style="display:inline-block;width:100%">
+                <ul id="ulMenu">
+                    <li>
+                        Users
+                        <ul>
+                            <li>
+                                Accounts
+                            </li>
+                            <li>
+                                Account Types
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        Groups
+                    </li>
+                    <li>
+                        Scopes
+                    </li>
+                 
+                    <li>
+                        Projects
+                    </li>
+                    <li>
+                        Roles
+                    </li>
+                    <li>
+                        Types
+                    </li>  
+                </ul>
+            </div>       
+        </div>
+
+        <div id="divContent" style="display: block;">
+            
+            <div id="divADUserControls" class="contentArea"  style="display:none;">
+                <div id="divGrdADUsers" style="display:block">
+                </div>
+            </div>
+            
+            <div id="divADUserAccountTypeControls" class="contentArea"  style="display:none">
+                <div id="divGrdADUserAccountTypes" style="display:block">
+                </div>                
+            </div>
+ 
+            <div id="divADGroupControls" class="contentArea" style="display:none;">
+                <div id="divGrdADGroups" style="height:800px;">
+                </div>
+             </div>
+            
+            <div id="divMIPGroupScopeControls" class="contentArea"  style="display:none">
+                <div id="divGrdMIPGroupScopes" style="display:block">
+                </div>                
+            </div>
+           
+            <div id="divMIPGroupProjectControls" class="contentArea"  style="display:none">
+                <div id="divGrdMIPGroupProjects" style="display:block">
+                </div>                
+            </div>
+            
+            <div id="divMIPGroupRoleControls" class="contentArea"  style="display:none">
+                <div id="divGrdMIPGroupRoles" style="display:block">
+                </div>                
+            </div>
+
+            <div id="divMIPGroupTypeControls" class="contentArea"  style="display:none;">
+                <div id="divGrdMIPGroupTypes">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        init();
+
+        function init()
+        {
+            loadPage();
+        }
+
+        function loadPage()
+        {
+            $("#ulMenu").kendoMenu({
+                select: function(e)
+                {
+                    var itemText = $(e.item).children(".k-link").text().trim();
+
+                    $(".contentArea").hide();
+
+                    switch (itemText) 
+                    {
+                        case "Accounts":
+                            $("#divADUserControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('User Accounts')
+                            $("#divGrdADUsers").kendoGrid(
+                            {
+                                dataSource:
+                                    {
+                                        type: "odata-v4",
+                                        transport: 
+                                            {
+                                                read: "https://localhost:44395/OData/ADUser"
+                                            },
+                                        pageSize: 30,
+                                    },
+                                height: 600,
+                                scrolable: true,
+                                filterable: true,
+                                pageable: true,
+                                sortable:
+                                {
+                                mode:"multiple"
+                                },
+                                groupable: true,
+                                columnMenu: true, 
+                                columns:[   //{selectable:true, width: 40},
+                                            {title:"Key", field:"user_key", width: 80},
+                                            {title:"Name", field:"name", width: 380},
+                                            {title:"User Name", field:"user_name", width: 190},
+                                            {title:"Company", field:"Company"},
+                                            {title:"Dept.", field:"Department", width: 190},
+                                            {title:"Title", field:"Title"},
+                                            {title:"EMail", field:"Email"},
+                                            {title:"Phone", field:"Telephone", width: 130},
+                                            {title:"Status", field:"Enabled", width: 70},
+                                            {title:"Expired", field:"AccountExpirationDate", width: 110},
+                                            {title:"Type", field:"AccountType", width: 60}],
+                            });                          
+                            break;
+                        case "Account Types" :
+                            $("#divADUserAccountTypeControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('User Account Types')
+                            $("#divGrdADUserAccountTypes").kendoGrid(
+                            {
+                                dataSource:
+                                    {
+                                        type: "odata-v4",
+                                        transport: 
+                                            {
+                                                read: "https://localhost:44395/OData/ADUserAccountType"
+                                            },
+                                        pageSize: 30,
+                                    },                
+                                height: 600,
+                                scrolable: true,
+                                filterable: true,
+                                pageable: true,
+                                sortable: {
+                                    mode:"mutiple"
+                                },
+                                groupable:true,
+                                columnMenu: true,
+                                columns:
+                                [
+                                    {title:"Key", field:"user_type_key", width: 60 },
+                                    {title:"Name", field:"user_type_name", width: 350 },
+                                    {title:"Description", field:"user_type_description"}
+                                ]                 
+                            });
+                            break;
+                        case "Groups": 
+                            $("#divADGroupControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('Security Groups')
+                            $("#divGrdADGroups").kendoGrid(
+                            {
+                                 dataSource:
+                                {
+                                    type: "odata-v4"
+                                    ,transport:
+                                    {
+                                        read: 
+                                        {
+                                            url: function()
+                                            {
+                                                return "https://localhost:44395/OData/ADGroup";
+                                            }
+                                        }
+                                        ,update:
+                                        {
+                                            url: function(dataItem)
+                                            {
+                                                var rtnData = "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")";
+                                                console.log(rtnData);
+                                                return rtnData;
+                                                
+                                            }
+                                        }
+                                        ,create:
+                                        {
+                                            url: function(dataItem)
+                                            {
+                                                return "https://localhost:44395/OData/ADGroup";
+                                            }
+                                        }
+                                        ,destroy:
+                                            {
+                                                url: function(dataItem)
+                                                {   
+                                                    // console.log("destroy function called");
+                                                    // return "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")";
+                                                }
+                                            }
+                                            ,parameterMap: function(data,type)
+                                            {
+                                                console.log(type);
+                                                if (type == "create")
+                                                {
+                                                    delete data.group__key;
+                                                }
+                                                console.log(data);
+                                                return kendo.stringify(data);
+                                            }
+                                    }
+                                    ,sort:
+                                    {
+                                        field:'group_Key'
+                                        , dir: 'asc'
+                                    }
+                                    ,schema:
+                                    {    
+                                        model:
+                                        {
+                                            id: "group_Key"
+                                            ,fields: 
+                                            {
+                                                group_Key:             { type: "number", editable:false}
+                                                ,group_id:              { type:"string", validation:{required: true, maxlength:"55"}}
+
+                                                ,group_scope_code:      { type:"string", validation:{required: false, maxlength:"6"}, defaultValue: null}
+                                                ,group_project_code:    { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: null}
+                                                ,group_role_code:       { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: null}
+                                                ,group_type_code:       { type:"string", validation:{required: false, maxlength:"15"} , defaultValue: null}
+                                                
+                                                ,group_description:     { type:"string", validation:{required: false, maxlength:"255"}, defaultValue:null}
+                                                ,group_object_category: { type:"string", validation:{required: false, maxlength:"255"}, defaultValue:null}
+                                                ,project_owner:         {type:"string", validation:{required: false, maxlength:"50"}, defaultValue:null}
+                                                ,project_email:         {type:"string", validation:{required: false, maxlength:"50"}, defaultValue:null}
+                                                ,project_telephone:     {type:"string", validation:{required: false, maxlength:"15"}, defaultValue:null}
+                                                ,create_date:           {type:"date", validation:{required: false}, defaultValue:null}
+                                                ,last_updated_date:     {type:"date", validation:{required: false}, defaultValue:null}
+                                                ,inactivated_date:      {type:"date", validation:{required: false}, defaultValue:null}
+                                                ,group_project_key:     {type:"number", validation:{required: false}, defaultValue: -1}
+                                                ,group_role_key:        {type:"number", validation:{required: false}, defaultValue: -1}
+                                                ,group_scope_key:       {type:"number", validation:{required: false}, defaultValue: -1}
+                                                ,group_type_key:        {type:"Number", validation:{required: false}, defaultValue: -1}
+                                                ,Inactive:              {type:"boolean", validation:{required: false},  defaultValue:false}
+                                                ,ad_inactive_date:      {type:"date"}
+                                            }
+                                        },  
+                                    }                   
+                                }
+                                ,navigatable: true
+                                ,pageable:
+                                    {    info: true
+                                        ,numeric:true
+                                        ,pageSize:18
+                                        ,refresh:true
+                                        ,respoinsive:true
+                                    } 
+                                ,filterable:true
+                                ,sortable:true
+                                ,sortable:
+                                {
+                                    mode:"single"
+                                }
+                                ,columnMenu:true
+                                ,toolbar: ["create", "save", "cancel","<button class='k-button group-toggleinactive-button' >Hide Inactive</button>"]
+                                ,columns:
+                                    [    { field: "group_Key", title: "Key", width: 80, locked:true, lockable:false}
+                                        ,{ command: [
+                                                        "edit"
+                                                    , {  name:"InactivateGrp"
+                                                        ,text:"Inactivate"
+                                                        ,click: groupInactivate
+                                                        }
+                                                    ], title: "&nbsp;", width: 200, locked:true, lockable:false}
+                                        ,{ field: "group_id", title: "ID", width: 320, locked:true}
+
+                                        ,{ field: "group_scope_code", title: "Scope", width: 250, editor: groupScopeCodeDropDownEditor, template: "#=kendo.toString(group_scope_code)#"}
+                                        ,{ field: "group_project_code", title: "Project", width: 250, editor: groupProjectCodeDropDownEditor, template: "#=kendo.toString(group_project_code)#"}
+                                        ,{ field: "group_role_code", title: "Role", width: 250, editor: groupRoleCodeDropDownEditor, template: "#=kendo.toString(group_role_code)#"}
+                                        ,{ field: "group_type_code", title: "Type", width: 250, editor: groupTypeCodeDropDownEditor, template: "#=kendo.toString(group_type_code)#"}
+                                        
+                                        ,{ field: "group_description", title: "Description", width: 300}
+                                        ,{ field: "group_object_category", hidden:true , title: "Object Category", width: 90}
+                                        ,{ field: "project_owner", title: "Owner", width: 100}
+                                        ,{ field: "project_email", title: "EMail", width: 150}
+                                        ,{ field: "project_telephone", title: "Phone", width: 130}
+                                        ,{ field: "create_date", hidden:true , title: "Created", width: 90, template : '#= kendo.toString(create_date,"yyyy-MM-dd") #'}
+                                        ,{ field: "last_updated_date", hidden:true , title: "Updated", width: 90, template : '#= kendo.toString(last_updated_date,"yyyy-MM-dd") #'}
+                                        ,{ field: "inactivated_date", title: "Inactivated", width: 150, template : '#= kendo.toString(inactivated_date,"yyyy-MM-dd") #'}
+                                        ,{ field: "group_project_key", hidden:true, title:"Project_key"} 
+                                        ,{ field: "group_role_key", hidden:true, title:"Role_Key"}      
+                                        ,{ field: "group_scope_key", hidden:true, title:"Scope_Key"}     
+                                        ,{ field: "group_type_key", hidden:true, title:"Type_Key"} 
+                                        ,{ field: "Inactive", title: "Inactive", width: 130}
+                                        ,{ field: "ad_inactive_date", title:"Ad Inactive Date", width: 180, template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd") #'}   
+                                    ]
+                                ,editable: "inline"
+                                ,height: "1100"
+                            });
+                            break;
+                        case "Scopes":                      
+                            $("#divMIPGroupScopeControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('Scopes')
+                            $("#divGrdMIPGroupScopes").kendoGrid({
+                                 dataSource:
+                                    {    type: "odata-v4"
+                                        ,transport:
+                                        {
+                                            read: 
+                                            {
+                                                url: function()
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupScope";
+                                                }
+                                            }
+                                            ,update:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupScope(" + dataItem.group_scope_key + ")";
+                                                    
+                                                }
+                                            }
+                                            ,create:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupScope";
+                                                }
+                                            }
+                                            ,destroy:
+                                                {
+                                                    url: function(dataItem)
+                                                    {
+                                                        return "https://localhost:44395/OData/MIPGroupScope(" + dataItem.group_scope_key + ")";
+                                                    }
+                                                }
+                                            ,parameterMap: function(data,type)
+                                            {
+                                                console.log(type);
+                                                if (type == "create")
+                                                {
+                                                    delete data.group_scope_key;
+                                                    return kendo.stringify(data);
+                                                }
+                                                console.log(data);
+                                                return kendo.stringify(data);
+                                            }
+                                        }                            
+                                        ,sort:
+                                        { 
+                                            field:'group_scope_key'
+                                            ,dir: 'asc'
+                                        }
+                                        ,schema:
+                                        {    
+                                            model:
+                                            {
+                                                id: "group_scope_key"
+                                                ,fields: 
+                                                {
+                                                group_scope_key:  { editable:false, type: "number" } 
+                                                ,group_scope_code: { type:"string", validation:{required: true, maxlength:"6"}} 
+                                                ,group_scope_name: { type:"string", validation:{required: false, maxlength:"50"}, defaultValue: null}
+                                                ,group_scope_description: { type:"string", validation: {required:false, maxlength:"255"} , defaultValue: null}
+                                                ,Inactive: {type:"boolean", validation:{required: false}, defaultValue:false}
+                                                }
+                                            }
+                                        }
+                                        ,pageSize: 18
+                                    }
+                                ,navigatable: true
+                                ,pageable: true
+                                ,filterable:true
+                                ,sortable:true
+                                ,columnMenu:true
+                                ,toolbar: ["create", "save", "cancel","<button class='k-button scope-toggleinactive-button' >Hide Inactive</button>"]
+                                ,columns:
+                                    [    { field: "group_scope_key", title: "Key", width: 80, locked:true, lockable:false}
+                                        ,{command: [
+                                                     "edit"
+                                                    , {  name:"InactivateScope"
+                                                        ,text:"Inactivate"
+                                                        ,click: scopeInactivate
+                                                        }
+                                                   ], title: "&nbsp;", width: 200, locked:true, lockable:false}
+                                        ,{ field: "group_scope_code", title: "Code", width: 80, locked:true, lockable:false }
+                                        ,{ field: "group_scope_name", title: "Name", width: 380 }
+                                        ,{ field: "group_scope_description", title: "Description", width: 400}
+                                        ,{ field: "Inactive", title: "Inactive", width: 120}
+                                    ]
+                                ,editable: "inline"
+                                ,height: "1100"
+                            });                   
+                            break;
+                        case "Projects":
+                            $("#divMIPGroupProjectControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('Projects')
+                            $("#divGrdMIPGroupProjects").kendoGrid({
+                                dataSource:
+                                    {    type: "odata-v4"
+                                        ,transport:
+                                        {
+                                            read: 
+                                            {
+                                                url: function()
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupProject";
+                                                }
+                                            }
+                                            ,update:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupProject(" + dataItem.group_project_key + ")";                                   
+                                                }
+                                            }
+                                            ,create:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupProject";
+                                                }
+                                            }
+                                            ,destroy:
+                                                {
+                                                    url: function(dataItem)
+                                                    {
+                                                        return "https://localhost:44395/OData/MIPGroupProject(" + dataItem.group_project_key + ")";
+                                                    }
+                                                }
+                                            ,parameterMap: function(data,type)
+                                            {
+                                                console.log(type);
+                                                if (type == "create")
+                                                {
+                                                    delete data.group_project_key;
+                                                    return kendo.stringify(data);
+                                                }
+                                                console.log(data);
+                                                return kendo.stringify(data);
+                                            }
+                                        }                            
+                                        ,sort:
+                                        { 
+                                            field:'group_project_key'
+                                            ,dir: 'asc'
+                                        }
+                                        ,schema:
+                                        {    
+                                            model:
+                                            {
+                                                id: "group_project_key"
+                                                ,fields: 
+                                                {
+                                                group_project_key:  { editable:false, type: "number" } 
+                                                ,group_project_code: { type:"string", validation:{required: true, maxlength:"20"}}
+                                                ,group_project_name: { type:"string", validation:{required: false, maxlength:"50"}, defaultValue: null}
+                                                ,group_project_description: { type:"string", validation:{required: false, maxlength:"255"}, defaultValue: null}
+                                                ,Inactive: { type:"boolean", validation:{required: false},  defaultValue:false}
+                                                }
+                                            }
+                                        }
+                                        ,pageSize: 18
+                                    }
+                                ,height: 500
+                                ,navigatable: true
+                                ,pageable: true
+                                ,filterable:true
+                                ,sortable:true
+                                ,columnMenu:true
+                                ,toolbar: ["create", "save", "cancel","<button class='k-button project-toggleinactive-button' >Hide Inactive</button>"]
+                                ,columns:
+                                    [    { field: "group_project_key", title: "Key", width: 80, locked:true, lockable:false}
+                                        ,{ field: "group_project_code", title: "Code", width: 80, locked:true, lockable:false }
+                                        ,{ command: [
+                                                     "edit"
+                                                     , {  name:"InactivateProject"
+                                                        ,text:"Inactivate"
+                                                        ,click: projectInactivate
+                                                        }
+                                                    ], title: "&nbsp;", width: 200, locked:true, lockable:false }
+                                        ,{ field: "group_project_name", title: "Name", width: 380 }
+                                        ,{ field: "group_project_description", title: "Description", width: 400}
+                                        ,{ field: "Inactive", title: "Inactive", width: 120}
+                                    ]
+                                ,editable: "inline"
+                            });                            
+                            break;
+                        case "Roles":
+                            $("#divMIPGroupRoleControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('Roles')
+                            $("#divGrdMIPGroupRoles").kendoGrid({
+                                dataSource:
+                                    {    type: "odata-v4"
+                                        ,transport:
+                                        {
+                                             read: 
+                                            {
+                                                url: function()
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupRole";
+                                                }
+                                            }
+                                            ,update:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupRole(" + dataItem.group_role_key + ")";
+                                                    
+                                                }
+                                            }
+                                            ,create:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupRole";
+                                                }
+                                            }
+                                            ,destroy:
+                                                {
+                                                    url: function(dataItem)
+                                                    {
+                                                        return "https://localhost:44395/OData/MIPGroupRole(" + dataItem.group_role_key + ")";
+                                                    }
+                                                }
+                                            ,parameterMap: function(data,type)
+                                            {
+                                                console.log(type);
+                                                if (type == "create")
+                                                {
+                                                    delete data.group_role_key;
+                                                    return kendo.stringify(data);
+                                                }
+                                                return kendo.stringify(data);
+                                            }
+                                        }                            
+                                        ,sort:
+                                        { 
+                                             field:'group_role_key'
+                                            ,dir: 'asc'
+                                        }
+                                        ,schema:
+                                        {    
+                                            model:
+                                            {
+                                                id: "group_role_key"
+                                                ,fields: 
+                                                {
+                                                 group_role_key:  {editable:false, type: "number" } 
+                                                ,group_role_code: { type:"string", validation:{required: true, maxlength:"20"}} 
+                                                ,group_role_name: { type:"string", validation:{required: false, maxlength:"50"}, defaultValue: null}
+                                                ,group_role_description: {type:"string", validation:{required: false, maxlength:"255"}, defaultValue: null}
+                                                ,Inactive: {type:"boolean", validation:{required: false}, defaultValue:false}
+                                                }
+                                            }
+                                        }
+                                        ,pageSize: 18
+                                    }
+                                ,height: 500
+                                ,navigatable: true
+                                ,pageable: true
+                                ,pageable:true
+                                ,filterable:true
+                                ,sortable:true
+                                ,columnMenu:true
+                                ,toolbar: ["create", "save", "cancel","<button class='k-button role-toggleinactive-button' >Hide Inactive</button>"]
+                                ,columns:
+                                    [    { field: "group_role_key", title: "Key", width: 80, locked:true, lockable:false}
+                                        ,{ field: "group_role_code", title: "Code", width: 80, locked:true, lockable:false }
+                                        ,{ command: [
+                                                       "edit"
+                                                      , {  name:"InactivateRole"
+                                                        ,text:"Inactivate"
+                                                        ,click: roleInactivate
+                                                        }
+                                                    ], title: "&nbsp;", width: 200, locked:true, lockable:false}
+                                        ,{ field: "group_role_name", title: "Name", width: 380 }
+                                        ,{ field: "group_role_description", title: "Description", width: 400}
+                                        ,{ field: "Inactive", title: "Inactive", width: 120}
+                                    ]
+                                ,editable: "inline"
+                            });
+                            break;
+                        case "Types":
+                            $("#divMIPGroupTypeControls").show();
+                            $("#divCurrentGrid").empty();
+                            $("#divCurrentGrid").append('Types')
+                            $("#divGrdMIPGroupTypes").kendoGrid({
+                                dataSource:
+                                    {    type: "odata-v4"
+                                        ,transport:
+                                        {
+                                             read: 
+                                            {
+                                                url: function()
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupType";
+                                                }
+                                            }
+                                            ,update:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupType(" + dataItem.group_type_key + ")";
+                                                    
+                                                }
+                                            }
+                                            ,create:
+                                            {
+                                                url: function(dataItem)
+                                                {
+                                                    return "https://localhost:44395/OData/MIPGroupType";
+                                                }
+                                            }
+                                            ,destroy:
+                                                {
+                                                    url: function(dataItem)
+                                                    {
+                                                        return "https://localhost:44395/OData/MIPGroupType(" + dataItem.group_type_key + ")";
+                                                    }
+                                                }
+                                            ,parameterMap: function(data,type)
+                                            {
+                                                console.log(type);
+                                                if (type == "create")
+                                                {
+                                                    delete data.group_type_key;
+                                                    return kendo.stringify(data);
+                                                }
+                                                return kendo.stringify(data);
+                                            }
+                                        }                            
+                                        ,sort:
+                                        { 
+                                             field:'group_type_key'
+                                            ,dir: 'asc'
+                                        }
+                                        ,schema:
+                                        {    
+                                            model:
+                                            {
+                                                id: "group_type_key"
+                                                ,fields: 
+                                                {
+                                                 group_type_key:  {editable:false, type: "number" } 
+                                                ,group_type_code: { type:"string", validation:{required: true, maxlength:"4"} }
+                                                ,group_type_name: { type:"string", validation:{required: false, maxlength:"50"}, defaultValue: null}
+                                                ,group_type_description: { type:"string", validation:{required: false, maxlength:"255"}, defaultValue: null}
+                                                ,Inactive: {type:"boolean", validation:{required: false}, defaultValue:false}
+                                                }
+                                            }
+                                        }
+                                        ,pageSize: 18
+                                    }
+                                ,height: 500
+                                ,navigatable: true
+                                ,pageable: true
+                                ,filterable:true
+                                ,sortable:true
+                                ,columnMenu:true
+                                ,toolbar: ["create", "save", "cancel","<button class='k-button type-toggleinactive-button' >Hide Inactive</button>"]
+                                ,columns:
+                                    [    { field: "group_type_key", title: "Key", width: 80, locked:true, lockable:false}
+                                        ,{ field: "group_type_code", title: "Code", width: 80, locked:true, lockable:false }
+                                        ,{ command: [
+                                                      "edit"
+                                                      , {  name:"InactivateType"
+                                                        ,text:"Inactivate"
+                                                        ,click: typeInactivate
+                                                        }
+                                                    ], title: "&nbsp;", width: 200, locked:true, lockable:false }
+                                        ,{ field: "group_type_name", title: "Name", width: 380 }
+                                        ,{ field: "group_type_description", title: "Description", width: 400}
+                                        ,{ field: "Inactive", title: "Inactive", width: 120}
+                                    ]
+                                ,editable: "inline"
+                            });
+                            break;
+                    }
+                }
+            });
+
+            $("#divMenu").show();
+
+            $(".group-toggleinactive-button").click(function()
+            {
+                console.log("toogle group inactive");
+                var grid = $("#divGrdADGroups").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());            
+            })
+
+            $(".scope-toggleinactive-button").click(function()
+            {
+                console.log("toggle scope inactive");
+                var grid = $("#divGrdMIPGroupScopes").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());                   
+            })
+
+            $(".project-toggleinactive-button").click(function()
+            {
+                console.log("toggle project inactive");
+                var grid = $("#divGrdMIPGroupProjects").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());                   
+            })
+
+            $(".role-toggleinactive-button").click(function()
+            {
+                console.log("toggle role inactive");
+                var grid = $("#divGrdMIPGroupRoles").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());                   
+            })
+
+            $(".type-inactive-button").click(function()
+            {
+                console.log("toggle type inactive");
+                var grid = $("#divGrdMIPGroupTypes").data("kendoGrid");
+                var datasource = grid.dataSource;
+                var currentFilter = datasource.filter();
+                console.log(currentFilter);
+                var activeOnlyFilter = 
+                {
+                      field: "Inactive"
+                    , operator: "neq"
+                    , value: "true"
+                };
+                console.log(activeOnlyFilter)
+                if ($(this).text() == "Hide Inactive")
+                {
+                    if (currentFilter == undefined)
+                    {
+                        datasource.filter(activeOnlyFilter);
+                    }
+                    else
+                    {
+                        currentFilter.filters.push(activeOnlyFilter);
+                        datasource.filter(currentFilter)
+                    }
+
+                    $(this).text("Show Inactive"); 
+                }
+                else
+                {
+                    $(this).text("Hide Inactive"); 
+                    datasource.filter({})
+                }
+                console.log($(this).text());                   
+            })
+
+
+            function groupScopeCodeDropDownEditor(container,options)
+            {
+                $('<input name="' + options.field + '"/>')
+                    .appendTo(container)
+                    .kendoDropDownList(
+                        {    autoBind: false
+                            ,valuePrimitive: true
+                            ,dataTextField: "group_scope_code"
+                            ,dataValueField: "group_scope_code"                            
+                            ,dataSource:
+                            {
+                                 type: "odata-v4"
+                                ,transport :
+                                    {
+                                        read: "https://localhost:44395/OData/MIPGroupScope"
+                                    }
+
+                            }
+                        }
+                    )
+            }
+
+            function groupTypeCodeDropDownEditor(container,options)
+            {
+                $('<input name="' + options.field + '"/>')
+                    .appendTo(container)
+                    .kendoDropDownList(
+                        {    autoBind: false
+                            ,valuePrimitive: true
+                            ,dataTextField: "group_type_code"
+                            ,dataValueField: "group_type_code"
+                            ,dataSource:
+                            {
+                                 type: "odata-v4"
+                                ,transport :
+                                    {
+                                        read: "https://localhost:44395/OData/MIPGroupType"
+                                    }
+
+                            }
+                        }
+                    )
+            }
+            
+            function groupProjectCodeDropDownEditor(container,options)
+            {
+                $('<input name="' + options.field + '"/>')
+                    .appendTo(container)
+                    .kendoDropDownList(
+                        {    autoBind: false
+                            ,valuePrimitive: true
+                            ,dataTextField: "group_project_code"
+                            ,dataValueField: "group_project_code"
+                            ,dataSource:
+                            {
+                                 type: "odata-v4"
+                                ,transport :
+                                    {
+                                        read: "https://localhost:44395/OData/MIPGroupProject"
+                                    }
+
+                            }
+                        }
+                    )
+            }
+
+            function groupRoleCodeDropDownEditor(container,options)
+            {
+                $('<input name="' + options.field + '"/>')
+                    .appendTo(container)
+                    .kendoDropDownList(
+                        {    autoBind: false
+                            ,valuePrimitive: true
+                            ,dataTextField: "group_role_code"
+                            ,dataValueField: "group_role_code"
+                            ,dataSource:
+                            {
+                                 type: "odata-v4"
+                                ,transport :
+                                    {
+                                        read: "https://localhost:44395/OData/MIPGroupRole"
+                                    }
+
+                            }
+                        }
+                    )
+            }
+
+            function groupInactivate(e)
+            {
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     type: "Delete"
+                    ,asyn:false
+                    ,url: "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")"
+                    ,success: function(data)
+                    {
+                        // alert(JSON.stringify(data));
+                        $("#divGrdADGroups").data('kendoGrid').dataSource.read();
+                        alert("Item " + dataItem.group_Key + "inactivated");                        
+                    }
+                    ,error: function(xhr, textStatus, errorMessage)
+                    {
+                        alert(errorMessage);
+                    }
+                });
+            }
+
+            function scopeInactivate(e)
+            {
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     type: "Delete"
+                    ,asyn:false
+                    ,url: "https://localhost:44395/OData/MIPGroupScope(" + dataItem.group_scope_key + ")"
+                    ,success: function(data)
+                    {
+                        // alert(JSON.stringify(data));
+                        $("#divGrdMIPGroupScopes").data('kendoGrid').dataSource.read();
+                        alert("Item " + dataItem.group_scope_key + "inactivated");                        
+                    }
+                    ,error: function(xhr, textStatus, errorMessage)
+                    {
+                        alert(errorMessage);
+                    }
+                });
+            }
+
+            function projectInactivate(e)
+            {
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     type: "Delete"
+                    ,asyn:false
+                    ,url: "https://localhost:44395/OData/MIPGroupProject(" + dataItem.group_project_key + ")"
+                    ,success: function(data)
+                    {
+                        // alert(JSON.stringify(data));
+                        $("#divGrdMIPGroupProjects").data('kendoGrid').dataSource.read();
+                        alert("Item " + dataItem.group_project_key + "inactivated");                        
+                    }
+                    ,error: function(xhr, textStatus, errorMessage)
+                    {
+                        alert(errorMessage);
+                    }
+                });
+            }
+
+            function roleInactivate(e)
+            {
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     type: "Delete"
+                    ,asyn:false
+                    ,url: "https://localhost:44395/OData/MIPGroupRole(" + dataItem.group_role_key + ")"
+                    ,success: function(data)
+                    {
+                        // alert(JSON.stringify(data));
+                        $("#divGrdMIPGroupRoles").data('kendoGrid').dataSource.read();
+                        alert("Item " + dataItem.group_role_key + "inactivated");                        
+                    }
+                    ,error: function(xhr, textStatus, errorMessage)
+                    {
+                        alert(errorMessage);
+                    }
+                });
+            }
+
+            function typeInactivate(e)
+            {
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     type: "Delete"
+                    ,asyn:false
+                    ,url: "https://localhost:44395/OData/MIPGroupType(" + dataItem.group_type_key + ")"
+                    ,success: function(data)
+                    {
+                        // alert(JSON.stringify(data));
+                        $("#divGrdMIPGroupRoles").data('kendoGrid').dataSource.read();
+                        alert("Item " + dataItem.group_type_key + "inactivated");                        
+                    }
+                    ,error: function(xhr, textStatus, errorMessage)
+                    {
+                        alert(errorMessage);
+                    }
+                });
+            }
+        }
+
+</script>
+</body>
+</html>

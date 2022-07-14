@@ -34,18 +34,42 @@
 </head>
     <div id="container">
         <div id="divContentHeader" style="display:block;">
-
-            <div id="divTitle" 
-                 class="testClass"
-                 style="display:block;
-                        max-width: 600px;
+            <div id="divTitle">
+                <div    id="div RightPlaceholder"
+                        style=" display:inline-block;
+                                float:left;
+                                min-width:20%;
+                                margin: 10px auto;
+                                padding-top: 40px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                text-align: center;"
+                                >
+                </div>
+                <div    id="divTitleText"
+                        style=" display: inline-block;
+                                float: left;
+                                width: 60%;
+                                margin: 10px auto;
+                                padding-top: 40px;
+                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                font-size: 42px;
+                                text-align: center;">
+                    Role Based Access Control           
+                </div>
+                <div    id="divCurrentGrid"
+                        style="display:inline-block;
+                        width:20%;
                         margin: 10px auto;
                         padding-top: 40px;
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                        font-size: 42px;">
-                        Role Based Access Control           
+                        font-size: 36px;
+                        text-align: center;">
+                    User Groups
+                </div>        
             </div>
-            <div id="divMenu" style="display:none;">
+
+            <div id="divMenu" style="display:inline-block;width:100%">
                 <ul id="ulMenu">
                     <li>
                         Users
@@ -76,23 +100,12 @@
                         Types
                     </li>  
                 </ul>
-            </div>
-        
+            </div>       
         </div>
 
         <div id="divContent" style="display: block;">
             
             <div id="divADUserControls" class="contentArea"  style="display:none;">
-                <div id="divADUsersCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                    Users
-                </div>  
                 <div id="divADUserDetail" style="display:none">
                 </div>
                 <div id="divADUserEdit" style="display:none">
@@ -106,16 +119,6 @@
             </div>
             
             <div id="divADUserAccountTypeControls" class="contentArea"  style="display:none">
-                <div id="divADUserAccountTypesCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                    Account Types
-                </div>  
                 <div id="divADUserAccountTypeDetail" style="display:none">
                 </div>
                 <div id="divADUserAccountTypesEdit" style="display:none">
@@ -124,17 +127,7 @@
                 </div>                
             </div>
  
-            <div id="divADGroupControls" class="contentArea" style="display:none;">
-                <div id="divADGroupsCaption" 
-                        style= "display:inline-flex;
-                                min-width:fit-content;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                    Security Groups
-                </div>                  
+            <div id="divADGroupControls" class="contentArea" style="display:none;">              
                 <div id="divADGroupDetail" style="display:none">
                 </div>
                 <div id="divADGroupEdit" style="display:none">
@@ -144,16 +137,6 @@
             </div>
             
             <div id="divMIPGroupScopeControls" class="contentArea"  style="display:none">
-                <div id="divMIPGroupScopeCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                Scopes
-                </div>  
                 <div id="divMIPGroupScopeDetail" style="display:none">
                 </div>
                 <div id="divMIPGroupScopeEdit" style="display:none">
@@ -163,16 +146,6 @@
             </div>
            
             <div id="divMIPGroupProjectControls" class="contentArea"  style="display:none">
-                <div id="divMIPGroupProjectCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                    Projects
-                </div>  
                 <div id="divMIPGroupProjectDetail" style="display:none">
                 </div>
                 <div id="divMIPGroupProjectEdit" style="display:none">
@@ -182,16 +155,6 @@
             </div>
             
             <div id="divMIPGroupRoleControls" class="contentArea"  style="display:none">
-                <div id="divMIPGroupRoleCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                Roles
-                </div>  
                 <div id="divMIPGroupRoleDetail" style="display:none">
                 </div>
                 <div id="divMIPGroupRoleEdit" style="display:none">
@@ -201,16 +164,6 @@
             </div>
 
             <div id="divMIPGroupTypeControls" class="contentArea"  style="display:none;">
-                <div id="divADGroupTypeCaption" 
-                        style= "display:inline-flex;
-                                max-width: 600px;
-                                margin: 10px auto;
-                                padding-top: 20px;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                font-size: 42px;
-                                align-items:flex-start;">
-                    Group Types
-                </div> 
                 <div id="divMIPGroupTypeDetail" style="display:none">
                 </div>
                 <div id="divMIPGroupTypeEdit" style="display:none">
@@ -247,18 +200,23 @@
                             break;
                         case "Groups": 
                             $("#divADGroupControls").show();
+                            $("#divGrdADGroups").data('kendoGrid').refresh();                
                             break;
-                        case "Scopes":
+                        case "Scopes":                      
                             $("#divMIPGroupScopeControls").show();
+                            $("#divGrdMIPGroupScopes").data('kendoGrid').refresh();                       
                             break;
                         case "Projects":
                             $("#divMIPGroupProjectControls").show();
+                            $("#divGrdMIPGroupProjects").data('kendoGrid').refresh();                       
                             break;
                         case "Roles":
                             $("#divMIPGroupRoleControls").show();
+                            $("#divGrdMIPGroupRoles").data('kendoGrid').refresh();                       
                             break;
                         case "Types":
                             $("#divMIPGroupTypeControls").show();
+                            $("#divGrdMIPGroupTypes").data('kendoGrid').refresh();                       
                             break;
                     }
                 }
@@ -266,68 +224,68 @@
 
             $("#divMenu").show();
 
-            $("#divGrdADUsers").kendoGrid(
-            {
-                dataSource:
-                    {
-                        type: "odata-v4",
-                        transport: 
-                            {
-                                read: "https://localhost:44395/OData/ADUser"
-                            },
-                        pageSize: 30,
-                    },
-                height: 600,
-                scrolable: true,
-                filterable: true,
-                pageable: true,
-                sortable:
-                {
-                  mode:"multiple"
-                },
-                groupable: true,
-                columnMenu: true, 
-                columns:[   {selectable:true, width: 40},
-                            {title:"Key", field:"user_key", width: 80},
-                            {title:"Name", field:"name", width: 380},
-                            {title:"User Name", field:"user_name", width: 190},
-                            {title:"Company", field:"Company"},
-                            {title:"Dept.", field:"Department", width: 190},
-                            {title:"Title", field:"Title"},
-                            {title:"EMail", field:"Email"},
-                            {title:"Phone", field:"Telephone", width: 130},
-                            {title:"Status", field:"Enabled", width: 70},
-                            {title:"Expired", field:"AccountExpirationDate", width: 110},
-                            {title:"Type", field:"AccountType", width: 60}],
-            });
+            // $("#divGrdADUsers").kendoGrid(
+            // {
+            //     dataSource:
+            //         {
+            //             type: "odata-v4",
+            //             transport: 
+            //                 {
+            //                     read: "https://localhost:44395/OData/ADUser"
+            //                 },
+            //             pageSize: 30,
+            //         },
+            //     height: 600,
+            //     scrolable: true,
+            //     filterable: true,
+            //     pageable: true,
+            //     sortable:
+            //     {
+            //       mode:"multiple"
+            //     },
+            //     groupable: true,
+            //     columnMenu: true, 
+            //     columns:[   {selectable:true, width: 40},
+            //                 {title:"Key", field:"user_key", width: 80},
+            //                 {title:"Name", field:"name", width: 380},
+            //                 {title:"User Name", field:"user_name", width: 190},
+            //                 {title:"Company", field:"Company"},
+            //                 {title:"Dept.", field:"Department", width: 190},
+            //                 {title:"Title", field:"Title"},
+            //                 {title:"EMail", field:"Email"},
+            //                 {title:"Phone", field:"Telephone", width: 130},
+            //                 {title:"Status", field:"Enabled", width: 70},
+            //                 {title:"Expired", field:"AccountExpirationDate", width: 110},
+            //                 {title:"Type", field:"AccountType", width: 60}],
+            // });
 
-            $("#divGrdADUserAccountTypes").kendoGrid(
-            {
-                dataSource:
-                    {
-                        type: "odata-v4",
-                        transport: 
-                            {
-                                read: "https://localhost:44395/OData/ADUserAccountType"
-                            },
-                        pageSize: 30,
-                    },                
-                height: 600,
-                scrolable: true,
-                filterable: true,
-                pageable: true,
-                sortable: {
-                    mode:"mutiple"
-                },
-                groupable:true,
-                columnMenu: true,
-                columns:
-                [
-                    {title:"Key", field:"user_type_key", width: 60 },
-                    {title:"Name", field:"user_type_name", width: 350 },
-                    {title:"Description", field:"user_type_description"}
-                ]                 
-            });
+            // $("#divGrdADUserAccountTypes").kendoGrid(
+            // {
+            //     dataSource:
+            //         {
+            //             type: "odata-v4",
+            //             transport: 
+            //                 {
+            //                     read: "https://localhost:44395/OData/ADUserAccountType"
+            //                 },
+            //             pageSize: 30,
+            //         },                
+            //     height: 600,
+            //     scrolable: true,
+            //     filterable: true,
+            //     pageable: true,
+            //     sortable: {
+            //         mode:"mutiple"
+            //     },
+            //     groupable:true,
+            //     columnMenu: true,
+            //     columns:
+            //     [
+            //         {title:"Key", field:"user_type_key", width: 60 },
+            //         {title:"Name", field:"user_type_name", width: 350 },
+            //         {title:"Description", field:"user_type_description"}
+            //     ]                 
+            // });
             
 
             $("#divGrdADGroups").kendoGrid({
@@ -361,8 +319,9 @@
                         ,destroy:
                             {
                                 url: function(dataItem)
-                                {
-                                    return "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")";
+                                {   
+                                    // console.log("destroy function called");
+                                    // return "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")";
                                 }
                             }
                             ,parameterMap: function(data,type)
@@ -390,10 +349,12 @@
                             {
                                  group_Key:             { type: "number", editable:false}
                                 ,group_id:              { type:"string", validation:{required: true, maxlength:"55"}}
-                                ,group_scope_code:      { type:"string", validation:{required: false, maxlength:"6"}, defaultValue:"n/a"}
-                                ,group_project_code:    { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: "n/a"}
-                                ,group_role_code:       { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: "n/a"}
-                                ,group_type_code:       { type:"string", validation:{required: false, maxlength:"15"} , defaultValue: "n/a"}
+
+                                ,group_scope_code:      { type:"string", validation:{required: false, maxlength:"6"}, defaultValue: null}
+                                ,group_project_code:    { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: null}
+                                ,group_role_code:       { type:"string", validation:{required: false, maxlength:"20"} , defaultValue: null}
+                                ,group_type_code:       { type:"string", validation:{required: false, maxlength:"15"} , defaultValue: null}
+                                
                                 ,group_description:     { type:"string", validation:{required: false, maxlength:"255"}, defaultValue:null}
                                 ,group_object_category: { type:"string", validation:{required: false, maxlength:"255"}, defaultValue:null}
                                 ,project_owner:         {type:"string", validation:{required: false, maxlength:"50"}, defaultValue:null}
@@ -410,8 +371,7 @@
                                 ,ad_inactive_date:      {type:"date"}
                             }
                         },  
-                    }  
-
+                    }                   
                     ,pageSize: 18
                 }
                 // ,change: onChange
@@ -431,12 +391,20 @@
                 ,toolbar: ["create", "save", "cancel","<button class='k-button group-inactive-button' >Hide Inactive</button>"]
                 ,columns:
                     [    { field: "group_Key", title: "Key", width: 80, locked:true, lockable:false}
-                        ,{ command: ["edit","destroy"], title: "&nbsp;", width: 200, locked:true, lockable:false}
+                        ,{ command: [
+                                        "edit"
+                                       , {  name:"Inactivate"
+                                           ,text:"Inactivate"
+                                           ,click: groupInactivate
+                                         }
+                                    ], title: "&nbsp;", width: 200, locked:true, lockable:false}
                         ,{ field: "group_id", title: "ID", width: 320, locked:true}
-                        ,{ field: "group_scope_code", title: "Scope", width: 250, editor: groupScopeCodeDropDownEditor, template: "#=group_scope_code#"}
-                        ,{ field: "group_project_code", title: "Project", width: 250, editor: groupProjectCodeDropDownEditor, template: "#=group_project_code#"}
-                        ,{ field: "group_role_code", title: "Role", width: 250, editor: groupRoleCodeDropDownEditor, template: "#=group_role_code#"}
-                        ,{ field: "group_type_code", title: "Type", width: 250, editor: groupTypeCodeDropDownEditor, template: "#=group_type_code#"}
+
+                        ,{ field: "group_scope_code", title: "Scope", width: 250, editor: groupScopeCodeDropDownEditor, template: "#=kendo.toString(group_scope_code)#"}
+                        ,{ field: "group_project_code", title: "Project", width: 250, editor: groupProjectCodeDropDownEditor, template: "#=kendo.toString(group_project_code)#"}
+                        ,{ field: "group_role_code", title: "Role", width: 250, editor: groupRoleCodeDropDownEditor, template: "#=kendo.toString(group_role_code)#"}
+                        ,{ field: "group_type_code", title: "Type", width: 250, editor: groupTypeCodeDropDownEditor, template: "#=kendo.toString(group_type_code)#"}
+                        
                         ,{ field: "group_description", title: "Description", width: 300}
                         ,{ field: "group_object_category", hidden:true , title: "Object Category", width: 90}
                         ,{ field: "project_owner", title: "Owner", width: 100}
@@ -453,6 +421,7 @@
                         ,{ field: "ad_inactive_date", title:"Ad Inactive Date", width: 180, template : '#= kendo.toString(ad_inactive_date,"yyyy-MM-dd") #'}   
                     ]
                 ,editable: "inline"
+                ,height: "90%"
             });
 
 
@@ -1028,12 +997,13 @@
 
             function groupScopeCodeDropDownEditor(container,options)
             {
-                $('<input required name="' + options.field + '"/>')
+                $('<input name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
                         {    autoBind: false
+                            ,valuePrimitive: true
                             ,dataTextField: "group_scope_code"
-                            ,dataValueField: "group_scope_code"
+                            ,dataValueField: "group_scope_code"                            
                             ,dataSource:
                             {
                                  type: "odata-v4"
@@ -1049,10 +1019,11 @@
 
             function groupTypeCodeDropDownEditor(container,options)
             {
-                $('<input required name="' + options.field + '"/>')
+                $('<input name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
                         {    autoBind: false
+                            ,valuePrimitive: true
                             ,dataTextField: "group_type_code"
                             ,dataValueField: "group_type_code"
                             ,dataSource:
@@ -1070,10 +1041,11 @@
             
             function groupProjectCodeDropDownEditor(container,options)
             {
-                $('<input required name="' + options.field + '"/>')
+                $('<input name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
                         {    autoBind: false
+                            ,valuePrimitive: true
                             ,dataTextField: "group_project_code"
                             ,dataValueField: "group_project_code"
                             ,dataSource:
@@ -1091,10 +1063,11 @@
 
             function groupRoleCodeDropDownEditor(container,options)
             {
-                $('<input required name="' + options.field + '"/>')
+                $('<input name="' + options.field + '"/>')
                     .appendTo(container)
                     .kendoDropDownList(
                         {    autoBind: false
+                            ,valuePrimitive: true
                             ,dataTextField: "group_role_code"
                             ,dataValueField: "group_role_code"
                             ,dataSource:
@@ -1110,6 +1083,38 @@
                     )
             }
 
+            function groupInactivate(e)
+            {
+                console.log("Reached Inactivated Function");
+                e.preventDefault();
+
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+                console.log(dataItem);
+
+                $.ajax({
+                     url: "https://localhost:44395/OData/ADGroup(" + dataItem.group_Key + ")"
+                    ,type: "Delete"
+                    ,contentType: "application/json;charset=utf-8;"
+                    ,dataType:"JSON"
+                    ,data: JSON.stringify(dataItem)
+                    ,sucess: function(data)
+                    {
+                        if (!data.error)
+                        {
+                            $("#divGrdADGroups").data('kendoGrid').refresh();
+                            alert("Item " + dataItem.group_Key + "inactivated");
+                        }
+                        else
+                        {
+                            console.log("Ajax inactivate Call Error.")
+                        }
+                    }
+                    // ,error: function(e)
+                    // {
+                    //     console.log(e);
+                    // }
+                });
+            }
 
             $(".k-grid-save-changes").click(function()
             {
